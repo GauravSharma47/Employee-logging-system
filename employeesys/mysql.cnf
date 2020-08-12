@@ -1,0 +1,5 @@
+[client]
+database = 'employeesys' 
+user = 'hash'
+password = 'Sql@4790'
+default-character-set = utf8

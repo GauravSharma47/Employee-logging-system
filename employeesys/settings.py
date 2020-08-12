@@ -77,8 +77,14 @@ WSGI_APPLICATION = 'employeesys.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'employees',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':#Database Name,
+        'USER':#UserName,
+        'PASSWORD':#Password,
+        'OPTIONS': {
+            #'read_default_file': './mysql.cnf',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     }
 }
 

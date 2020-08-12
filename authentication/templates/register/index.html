@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Register</title>
+  </head>
+  <body>
+    {% if message %}
+      <script type="text/javascript">
+        alert('{{message}}')
+      </script>
+    {% endif %}
+    <form action="{% url 'authentication:submit' %}" method="post">
+      {%csrf_token%}
+
+      Full Name: <input type="text" name="fname" placeholder="Full Name" required=True>
+      <br>
+      Mobile Number: <input type="text" name="mobile" placeholder='+91' required=True>
+      <br>
+      Email: <input type="text" name="mail" placeholder="example@domain" required=True>
+      <br>
+      City: <input type="text" name="city" placeholder="city" required=True>
+      <br>
+      State: <input type="text" name="state" placeholder="state" required=True>
+      <br>
+      Designation: <input type="text" name="designation" placeholder="Designation" required=True>
+      <br>
+      Aadhar Number: <input type="text" name="uId" placeholder="Aadhar Number" required=True>
+      <br>
+      Password: <input type="password" name="pwd" required=True>
+      <br>
+      <input type="submit" name="Submit" value="submit">
+    </form>
+  </body>
+</html>

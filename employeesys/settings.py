@@ -31,8 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'register.apps.RegisterConfig',
-    'login.apps.LoginConfig',
+    'authentication.apps.AuthenticationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,11 +77,10 @@ WSGI_APPLICATION = 'employeesys.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':#Database Name,
-        'USER':#UserName,
-        'PASSWORD':#Password,
+        'NAME':'employeesys',
+        'USER':'hash',
+        'PASSWORD':'Sql@4790',
         'OPTIONS': {
-            #'read_default_file': './mysql.cnf',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         },
     }

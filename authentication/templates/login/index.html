@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+  </head>
+  <body>
+    {% if message %}
+      <script type="text/javascript">
+        alert('{{message}}')
+      </script>
+    {% endif %}
+    <form  action="{% url 'authentication:auth' %}" method="post">
+      {% csrf_token %}
+      {{form}}
+      <br>
+      <input type="submit" name="submit" value="Login">
+    </form>
+
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'authentication:register' %}">Register Here</a>
+  </body>
+</html>

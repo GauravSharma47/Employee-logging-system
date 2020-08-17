@@ -1,20 +1,36 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Employee,Attendance
 from .forms import loginform
 from django.utils import timezone
 from random import randint
+from datetime import datetime
+
 
 def index(request):
+    if 'user' in request.session:
+        return render(request,'login/loggedin.html',{"name":request.session['user']})
     form=loginform()
     return render(request,'login/index.html',{'form':form})
 
 def logout(request):
     form=loginform()
-    return render(request,'login/index.html',{'form':form})
-
+    try:
+        e=Employee.objects.get(empId=request.session['user'])
+        e.loggedIn=False
+        e.save()
+        curr=timezone.now()
+        attendance=e.attendance_set.filter(logout__isnull=True)[0]
+        attendance.logout=curr
+        attendance.save()
+        e.save()
+    except:
+        return render(request,'login/index.html',{"message":"Error during logout. Please Contact IT Department.",'form':form})
+    request.session.flush()
+    return redirect('/')
 
 def auth(request):
+    request.session.flush()
     uname=request.POST.get('username')
     passd=request.POST.get('password')
     form=loginform()
@@ -23,27 +39,21 @@ def auth(request):
     except:
         return render(request,'login/index.html',{"message":"Please Check your credentials.",'form':form})
     if e.pwd==passd:
-        if check_previous_login(e):
+        if e.loggedIn is False:
+            e.loggedIn=True
+            e.save()
             attendance=e.attendance_set.create()
-            return render(request,'login/loggedin.html')
+            request.session['user']=uname
+            request.session.set_expiry(0)
+            return render(request,'login/loggedin.html',{"name":request.session['user']})
         else:
-            return render(request,'login/index.html',{"message":"User Already Logged in.",'form':form})
+            return render(request,'login/index.html',{"message":"Try restarting the browser or Logout from other sources before Logging in again.",'form':form})
     else:
         return render(request,'login/index.html',{"message":"Please Check your credentials.",'form':form})
 
-
-def check_previous_login(emp):
-    try:
-        previous=emp.attendance_set.all()[-1]
-        if previous is not None:
-            if previous.logouttime==None:
-                return True
-            else:
-                return False
-    except:
-        return True
-
 def register(request):
+    if 'user' in request.session:
+        return render(request,'login/loggedin.html',{"name":request.session['user']})
     return render(request,"register/index.html")
 
 
